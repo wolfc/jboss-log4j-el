@@ -42,6 +42,20 @@
       </layout>
    </appender>
 
+   <appender name="STACKTRACE" class="org.apache.log4j.ConsoleAppender">
+      <param name="Target" value="System.out"/>
+      <param name="Threshold" value="ALL"/>
+
+      <layout class="org.jboss.log4j.el.ExpressionLanguageLayout">
+         <!-- do not use ${..} because then log4j will evaluate :-) -->
+         <param name="Expression" value="#{java_lang_String:format('%1$tT', timeStamp)} #{level} [#{logger.name}] #{message}\n#{org_jboss_log4j_el_StackTrace:here()}\n"/>
+      </layout>
+   </appender>
+
+   <logger name="org.jboss.log4j.el.test.StackTraceTestCase">
+      <appender-ref ref="STACKTRACE"/>
+   </logger>
+
    <root>
       <priority value="INFO"/>
       <appender-ref ref="CONSOLE"/>
