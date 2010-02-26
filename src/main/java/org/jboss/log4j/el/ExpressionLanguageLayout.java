@@ -58,13 +58,21 @@ public class ExpressionLanguageLayout extends Layout
    {
       ELContext context = new LoggingEventContext(baseContext, loggingEvent);
       valueExpression = expressionFactory.createValueExpression(context, expression, EXPECTED_TYPE);
-      return EXPECTED_TYPE.cast(valueExpression.getValue(context));
+      try
+      {
+         return EXPECTED_TYPE.cast(valueExpression.getValue(context));
+      }
+      catch(RuntimeException e)
+      {
+         e.printStackTrace();
+         return "Error in expression " + expression + "--> " + e + "\n";
+      }
    }
 
    @Override
    public boolean ignoresThrowable()
    {
-      return false;
+      return true;
    }
 
    public void setExpression(String s)
